@@ -55,11 +55,14 @@ async function run(): Promise<void> {
     }
 
     const yarnLock = fs.existsSync(path.resolve(workingDir, 'yarn.lock'))
+    const bunLock = fs.existsSync(path.resolve(workingDir, 'bun.lockb'))
     const packageLock = fs.existsSync(path.resolve(workingDir, 'package-lock.json'))
 
     let installScript = `npm install --production=false`
     if (yarnLock) {
       installScript = `yarn --frozen-lockfile`
+    } else if (bunLock) {
+      installScript = `bun install`
     } else if (packageLock) {
       installScript = `npm ci`
     }
